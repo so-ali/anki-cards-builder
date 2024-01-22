@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, onMounted, ref, defineEmits } from 'vue';
-import { WordsQueue } from '../Types';
+import { Word, WordsQueue } from '../Types';
 
 const props = defineProps({
     words: Array<WordsQueue>
@@ -11,9 +11,9 @@ const emit = defineEmits(["build"]);
 const selectedWords = ref<Array<WordsQueue> | undefined>([]);
 const currentWord = ref<number>(0);
 
-function setWordValue(word: WordsQueue, key: string, dictionary: string) {
-    if (typeof word.selected[key] !== 'undefined') {
-        word.selected[key] = JSON.parse(JSON.stringify(word[dictionary][key]));
+function setWordValue(word: WordsQueue, key: string, cambridge: boolean = true) {
+    if (word.selected && typeof word.selected !== 'undefined' && typeof word.selected[key as keyof Word] !== 'undefined') {
+        word.selected[key as keyof Word] = JSON.parse(JSON.stringify(cambridge ? word.cambridge[key as keyof Word] : word.oxford[key as keyof Word]));
     }
 }
 
@@ -48,10 +48,10 @@ onMounted(() => {
 
                                 <div class="flex gap-5">
                                     <label><input type="radio" checked :name="word.word + '-type'"
-                                            v-on:change.selected="setWordValue(word, 'type', 'cambridge')">
+                                            v-on:change.selected="setWordValue(word, 'type')">
                                         Cambridge</label>
                                     <label><input type="radio" :name="word.word + '-type'"
-                                            v-on:change.selected="setWordValue(word, 'type', 'oxford')"> Oxford</label>
+                                            v-on:change.selected="setWordValue(word, 'type', false)"> Oxford</label>
                                 </div>
                             </div>
 
@@ -67,10 +67,10 @@ onMounted(() => {
 
                                 <div class="flex gap-5">
                                     <label><input type="radio" checked :name="word.word + '-description'"
-                                            v-on:change.selected="setWordValue(word, 'description', 'cambridge')">
+                                            v-on:change.selected="setWordValue(word, 'description')">
                                         Cambridge</label>
                                     <label><input type="radio" :name="word.word + '-description'"
-                                            v-on:change.selected="setWordValue(word, 'description', 'oxford')">
+                                            v-on:change.selected="setWordValue(word, 'description',false)">
                                         Oxford</label>
                                 </div>
                             </div>
@@ -86,10 +86,10 @@ onMounted(() => {
 
                                 <div class="flex gap-5">
                                     <label><input type="radio" checked :name="word.word + '-synonyms'"
-                                            v-on:change.selected="setWordValue(word, 'synonyms', 'cambridge')">
+                                            v-on:change.selected="setWordValue(word, 'synonyms')">
                                         Cambridge</label>
                                     <label><input type="radio" :name="word.word + '-synonyms'"
-                                            v-on:change.selected="setWordValue(word, 'synonyms', 'oxford')">
+                                            v-on:change.selected="setWordValue(word, 'synonyms', false)">
                                         Oxford</label>
                                 </div>
                             </div>
@@ -103,10 +103,10 @@ onMounted(() => {
                                 <div class="block text-sm font-semibold leading-6 text-gray-900 flex-1">US Sound</div>
                                 <div class="flex gap-5">
                                     <label><input type="radio" checked :name="word.word + '-usSound'"
-                                            v-on:change.selected="setWordValue(word, 'usSound', 'cambridge')">
+                                            v-on:change.selected="setWordValue(word, 'usSound')">
                                         Cambridge</label>
                                     <label><input type="radio" :name="word.word + '-usSound'"
-                                            v-on:change.selected="setWordValue(word, 'usSound', 'oxford')">
+                                            v-on:change.selected="setWordValue(word, 'usSound', false)">
                                         Oxford</label>
                                 </div>
                             </div>
@@ -127,10 +127,10 @@ onMounted(() => {
                                 <div class="block text-sm font-semibold leading-6 text-gray-900 flex-1">UK Sound</div>
                                 <div class="flex gap-5">
                                     <label><input type="radio" checked :name="word.word + '-ukSound'"
-                                            v-on:change.selected="setWordValue(word, 'ukSound', 'cambridge')">
+                                            v-on:change.selected="setWordValue(word, 'ukSound')">
                                         Cambridge</label>
                                     <label><input type="radio" :name="word.word + '-ukSound'"
-                                            v-on:change.selected="setWordValue(word, 'ukSound', 'oxford')">
+                                            v-on:change.selected="setWordValue(word, 'ukSound', false)">
                                         Oxford</label>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@ onMounted(() => {
                 <button v-on:click="() => { currentWord--; }" v-if="currentWord > 0" class="rounded-md bg-red-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Previous Word</button>
             
                 <span class="flex-1"></span>
-            <button v-on:click="()=>{currentWord++;}" v-if="currentWord+1 < selectedWords.length" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Next Word</button>
+            <button v-on:click="()=>{currentWord++;}" v-if="selectedWords && currentWord+1 < selectedWords.length" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Next Word</button>
             <button v-on:click="()=>{emit('build',selectedWords)}" class="rounded-md bg-green-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Build The Flash Cards</button>
     </div>
 </div>

@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import http from "./Request";
+import axios from 'axios'
 
 class Dictionary {
     source: string;
@@ -12,8 +12,8 @@ class Dictionary {
     }
 
     async find(): Promise<Dictionary> {
-        let request = new Promise<Dictionary>((resolve, reject) => {
-            http({
+        let request = new Promise<Dictionary>((resolve) => {
+            axios({
                 method: 'get',
                 url: this.source.replace("{word}", this.word),
             }).then((response: AxiosResponse) => {
@@ -24,7 +24,7 @@ class Dictionary {
 
         return await request;
     }
-    private getData(element: Element, data: string = "text"): string | null {
+    private getData(element: HTMLElement, data: string = "text"): string | null {
         if (data == "html") {
             return element.innerHTML;
         } else if (data == "text" && typeof element?.innerText !== "undefined") {
@@ -35,9 +35,11 @@ class Dictionary {
         return "";
     }
     getSelector(selector: string, data: string = "text", sep: any = "\n"): string | null {
-        var div = document.createElement('div');
-        div.innerHTML = this.content;
-        let elements = div.querySelectorAll(selector);
+        let div : HTMLElement = document.createElement('div');
+        if(this.content !== null){
+            div.innerHTML = this.content;
+        }
+        let elements: NodeListOf<HTMLElement> = div.querySelectorAll(selector);
         if (elements !== null && elements.length > 0) {
             let content = "";
             if (typeof sep === "number") {
@@ -58,7 +60,7 @@ class Dictionary {
     }
 
     getSound(accent: string = "us"): string | null {
-        return "";
+        return accent;
     }
 
     getDescription(): string | null {

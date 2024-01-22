@@ -8,7 +8,6 @@ import StepFour from "./components/StepFour.vue";
 
 const wordsList = ref<Array<string>>([]);
 const wordsQueue = ref<Array<WordsQueue>>([]);
-const dictionariesList = ref<Array<string>>(["oxford", "cambridge"]);
 const step = ref<number>(1);
 
 function nextStep() {
@@ -33,9 +32,8 @@ function reset() {
           style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" />
       </div>
       <TransitionGroup name="list" tag="div">
-        <StepOne v-if="step === 1" v-on:words-updated="(words) => { wordsList = words }"
-          v-on:dictionaries-updated="(dictionaries) => { dictionariesList = dictionaries }" @submit="nextStep"></StepOne>
-        <StepTwo v-if="step === 2" :words="wordsList" :dics="dictionariesList" @completed="(words)=>{wordsQueue = words}" @submit="nextStep"></StepTwo>
+        <StepOne v-if="step === 1" v-on:words-updated="(words) => { wordsList = words }" @submit="nextStep"></StepOne>
+        <StepTwo v-if="step === 2" :words="wordsList" @completed="(words)=>{wordsQueue = words}" @submit="nextStep"></StepTwo>
         <StepThree v-if="step === 3" :words="wordsQueue" @build="(words)=>{wordsQueue = words; nextStep();}"></StepThree>
         <StepFour v-if="step === 4" :words="wordsQueue" @reset="reset"></StepFour>
       </TransitionGroup>

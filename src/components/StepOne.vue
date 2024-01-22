@@ -5,9 +5,6 @@ import { defineModel, ref, watch, defineEmits } from 'vue';
 const emit = defineEmits(["wordsUpdated", "submit"]);
 const wordsModel = defineModel<string>("");
 const wordsList = ref<Array<string>>([]);
-const dictionaries = ref<Array<string>>([]);
-const cambridge = ref(true);
-const oxford = ref(true);
 
 watch(wordsModel, async (newWords) => {
     wordsList.value = [];

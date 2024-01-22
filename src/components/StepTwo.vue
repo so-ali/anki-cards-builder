@@ -61,7 +61,10 @@ onMounted(() => {
     props.words?.forEach((item: string) => {
         wordsQueue.value.push({
             status: "pending",
-            word: item
+            word: item,
+            cambridge: {word:item},
+            oxford: {word:item},
+            selected: {word:item},
         });
     });
 
