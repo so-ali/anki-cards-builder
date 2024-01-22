@@ -1,4 +1,5 @@
-import axios from "axios";
+import { AxiosResponse } from "axios";
+import http from "./Request";
 
 class Dictionary {
     source: string;
@@ -12,19 +13,11 @@ class Dictionary {
 
     async find(): Promise<Dictionary> {
         let request = new Promise<Dictionary>((resolve, reject) => {
-            if (window.localStorage.getItem(this.source.replace("{word}", this.word)) !== null) {
-                this.content = JSON.parse(window.localStorage.getItem(this.source.replace("{word}", this.word)));
-                resolve(this);
-            }
-            axios({
+            http({
                 method: 'get',
                 url: this.source.replace("{word}", this.word),
-                withCredentials: false,
-            }).then((response) => {
+            }).then((response: AxiosResponse) => {
                 this.content = response.data;
-                if (response.data !== '' && response.data !== null) {
-                    window.localStorage.setItem(this.source.replace("{word}", this.word), JSON.stringify(response.data))
-                }
                 resolve(this);
             });
         });

@@ -4,6 +4,7 @@ import StepOne from "./components/StepOne.vue";
 import StepTwo from "./components/StepTwo.vue";
 import StepThree from "./components/StepThree.vue";
 import { WordsQueue } from "./Types";
+import StepFour from "./components/StepFour.vue";
 
 const wordsList = ref<Array<string>>([]);
 const wordsQueue = ref<Array<WordsQueue>>([]);
@@ -13,6 +14,13 @@ const step = ref<number>(1);
 function nextStep() {
   step.value++;
 }
+
+function reset() {
+  step.value = 1;
+  wordsList.value = [];
+  wordsQueue.value = [];
+}
+
 </script>
 
 <template>
@@ -28,7 +36,8 @@ function nextStep() {
         <StepOne v-if="step === 1" v-on:words-updated="(words) => { wordsList = words }"
           v-on:dictionaries-updated="(dictionaries) => { dictionariesList = dictionaries }" @submit="nextStep"></StepOne>
         <StepTwo v-if="step === 2" :words="wordsList" :dics="dictionariesList" @completed="(words)=>{wordsQueue = words}" @submit="nextStep"></StepTwo>
-        <StepThree v-if="step === 3" :words="wordsQueue"></StepThree>
+        <StepThree v-if="step === 3" :words="wordsQueue" @build="(words)=>{wordsQueue = words; nextStep();}"></StepThree>
+        <StepFour v-if="step === 4" :words="wordsQueue" @reset="reset"></StepFour>
       </TransitionGroup>
     </div>
   </div>

@@ -33,7 +33,7 @@ function runQueue() {
                 ukSound: response.getSound("uk"),
                 usSound: response.getSound(),
             };
-
+            pendingWords[0].selected = JSON.parse(JSON.stringify(pendingWords[0].cambridge));
 
             const dictionaryOxford = new Oxford(response.word);
             dictionaryOxford.find().then((oxResponse: Dictionary) => {
@@ -73,7 +73,7 @@ onMounted(() => {
         <div class="mx-auto max-w-2xl text-center">
 
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Getting words...</h2>
-            <p class="mt-2 text-lg leading-8 text-gray-600">Automatic card generation for Anki application.</p>
+            <p class="mt-2 text-lg leading-8 text-gray-600">Automatic card builder for Anki application.</p>
         </div>
         <ul role="list" class="divide-y divide-gray-100">
             <li v-for="word in wordsQueue" :key="word.word" class="flex justify-between gap-x-6 py-5"> 

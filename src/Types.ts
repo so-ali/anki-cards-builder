@@ -10,8 +10,9 @@ interface Word{
 interface WordsQueue{
     status: string,
     word: string,
-    oxford?: Word,
-    cambridge?: Word
+    oxford: Word,
+    cambridge: Word,
+    selected: Word
 }
 
 export type {Word,WordsQueue};

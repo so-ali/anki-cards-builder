@@ -12,6 +12,7 @@
     "@headlessui/vue": "^1.7.17",
     "@heroicons/vue": "^2.1.1",
     "axios": "^1.6.5",
+    "axios-cache-plugin": "^0.1.0",
     "swiper": "^11.0.5",
     "vue": "^3.3.11"
   },
@@ -19,6 +20,7 @@
     "@vitejs/plugin-vue": "^4.5.2",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.33",
+    "sass": "^1.70.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
